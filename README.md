@@ -1,59 +1,58 @@
-# LawGLM
+# LexiFlow Agent
 
-## 仓库介绍
+**法律领域工具调用与多步推理 · 从问题规划到执行反馈**
 
-本仓库是关于2024年琶洲算法大赛的开源代码汇总， 旨在探索大语言模型在法律行业的应用潜力。 本仓库存放了数个比赛团队的竞赛原始代码，均经过整理并开源。
+以 APIWeaver 为主要学习与扩展入口，研究实体识别、任务分解、接口调用、代码执行和错误反馈如何组成可追踪的问答流程。
 
-> 关于本次LawGLM比赛及开源项目的背景情况及台前幕后的故事，请参考 [文档](remain_true_to_our_original_open-source_aspiration_in_the_legal_industry.md)。
+> 基于 [MetaGLM/LawGLM](https://github.com/MetaGLM/LawGLM) 的个人复现与扩展分支。保留原始竞赛方案合集；当前完成项目命名、首页与导航整理，尚未完成端到端复现。[来源记录](UPSTREAM.md) · [原始项目说明](README.upstream.md)
 
-+ 比赛链接和介绍: https://tianchi.aliyun.com/competition/entrance/532221
-+ 技术： 参赛选手们使用了 Function Call，RAG，长文本等多项技术，让大模型在法律领域发挥了更大的作用。
-+ 模型： 比赛选手的灵活使用 `GLM-4-Air`，`GLM-4-AirX`，`GLM-4-Plus`，`GLM-4-Flash` 等多种 GLM API系列模型。
-  充分发挥 `GLM-4-AirX` 响应快，`GLM-4-Flash` 免费，`GLM-4-Plus` 精度高等优势，结合使用，实现高性价比解决方案。
+## 主要流程：APIWeaver
 
-## 项目更新
+```text
+用户问题 → 实体识别与规范化 → 连续查询 / 结构化规划
+                                         ↓
+                                API 调用与代码执行
+                                         ↓
+                                报错反馈与修正
+                                         ↓
+                                  执行历史汇总 → 答案
+```
 
-- 🔥🔥 **News**: ```2024/12/03```: [2024金融行业·大模型挑战赛](https://competitions.zhipuai.cn/matchDetail?id=120241202000000003) 已经正式推出，持续开源！欢迎报名参赛。
-- 🔥 **News**: ```2024/11/30```: 我们将会公开视频教程，方便大家学习。
-- 🔥 **News**: ```2024/10/20```: 我们整理开源了第一个参赛队伍的代码。并完成了项目的基础工作。
+## 方案导航
 
-## 比赛规则
+| 入口 | 主要学习内容 |
+| --- | --- |
+| [APIWeaver](APIWeaver-lawGLM/README.md) | 主入口：规划、接口文档利用、执行反馈与纠错 |
+| [Vinlic](Vinlic-lawGLM/README.md) | Function Calling 与 Planner / CodeAct 方案比较 |
+| [LegalHi](LegalHi-LawGLM/README.md) | 意图分类、问题改写、结果判断与反思 |
+| [其他竞赛方案](README.upstream.md) | 完整团队列表、原作者与赛事背景 |
 
-### 答疑和规则
+## 复现入口
 
-+ 官方QA视频: https://www.bilibili.com/video/BV1k4421U78c/?vd_source=c083324a69ff411499cf1b5f539eaac7
-+ QA PPT: [点击这里](assets/qa.pdf)
-+ 官方解题思路： https://www.bilibili.com/video/BV1k4421U78c/?vd_source=c083324a69ff411499cf1b5f539eaac7
+```bash
+git clone https://github.com/yuur1h/lexiflow-agent.git
+cd lexiflow-agent/APIWeaver-lawGLM
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
-### BaseLine
+后续按照 [APIWeaver 运行说明](APIWeaver-lawGLM/README.md) 配置 IPython kernel、模型密钥及比赛数据接口，再运行 `app/run_with_process.py`。可以先阅读 [演示 Notebook](APIWeaver-lawGLM/app/simple_demo.ipynb)。
 
-+ [伍柒](assets/【baseline分享】伍柒.pdf)
-+ [法外张三](assets/【baseline分享】法外张三.pdf)
-+ [张江高科](assets/【baseline分享】张江高科.pdf)
+旧比赛接口权限和可用性尚未核验；安装依赖不代表能够完整运行。不要把真实密钥写入版本控制。该方案包含生成代码执行，联网复现前需检查执行环境与接口配置。
 
-以上信息可供参考，进一步了解该比赛。
+## 后续开发计划
 
-## 队伍代码
+以下均为待办：
 
-+ [APIWeaver](APIWeaver-lawGLM/README.md): 由 [MeiPixel](https://github.com/MeiPixel) 贡献。
-  支持文档召回, 通过大模型对话式优化prompt, 运行记录转化为llama factory训练格式 ,一键部署gradio等多样功能。
-+ [Vinlic](Vinlic-lawGLM/README.md): 由 [Vinlic](https://github.com/Vinlic)
-  贡献。Vinlic队在第三届琶洲算法大赛GLM法律行业大模型挑战赛道中提出了两种方案：方案A结合多轮迭代与FunctionCall实现Token节省，方案B结合多轮迭代、Planner与CodeAct实现更高自由度。
-+ [Move_forward_every_da](Move_forward_every_day-lawGLM/README.md): 每天前进30公里团队的终版（复赛）方案。复赛成绩排名第15名。
-+ [NickolasNi](NickolasNi-LawGLM/README.md): 由 NickolasNi 贡献，初赛方案。
-+ [LegalHi](LegalHi-LawGLM/README.md): LegalHi 团队方案，通过意图分类，问题改写，思维链、结果判断、外反思等多个步骤，优秀完成任务。
-+ [Buycabbage-semi](Buycabbage-semi-LawGLM): 基于GLM多智能体协同的法律行业问答系统，由买白菜不砍价提供的复赛解决方案。
+- [ ] 核验模型和数据接口，记录可复现的环境配置
+- [ ] 用本地样例 API 替代不可用的比赛服务
+- [ ] 增加工具参数校验和调用次数预算
+- [ ] 记录工具成功率、任务完成率、延迟与费用
+- [ ] 建立错误类型与恢复策略的对比评测
 
-## 开源协议
+## 来源与许可
 
-本代码中无特殊说明或者无注名额外协议的，均使用 [Apache 2.0](LICENSE) 协议。
+原始项目由 MetaGLM 汇总，具体方案属于相应团队；APIWeaver 由 [MeiPixel](https://github.com/MeiPixel) 贡献。原作者署名、历史及子目录文档保持保留。
 
-## 贡献指南
-
-我们欢迎任何参与比赛的队伍提交自己的比赛作品。
-
-如果您想参与贡献，请参考 [这里](assets/contribute_zh.md)
-
-我们感谢来自以下开发者的贡献，如果名单有却是，请您联系我们：
-
-[![lawglm contributors](https://contrib.rocks/image?repo=metaglm/lawglm&max=2000)](https://github.com/metaglm/lawglm/graphs/contributors)
+默认使用 [Apache 2.0](LICENSE)，子目录另有声明时按其声明执行。原竞赛排名仅描述上游团队成果，不代表本分支维护者的参赛或获奖经历。[完整来源记录](UPSTREAM.md)。
